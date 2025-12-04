@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import TodoItem from "./TodoItem";
 import "./style.css";
-import { db } from "./firebase";
+import db from "./firebase.js";
 
 // Firestore imports
 import {
