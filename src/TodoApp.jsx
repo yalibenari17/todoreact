@@ -1,49 +1,59 @@
 import { useState, useEffect } from "react";
 import TodoItem from "./TodoItem";
 import "./style.css";
+import { db } from "./firebase";
+
+// Firestore imports
+import {
+  collection,
+  addDoc,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  updateDoc
+} from "firebase/firestore";
 
 export default function TodoApp() {
-
-  // בעת טעינת העמוד — נבדוק אם יש משימות שמורות ב-localStorage
-  const [todos, setTodos] = useState(() => {
-    const saved = localStorage.getItem("todos");
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  // סטייט של האינפוט
+  const [todos, setTodos] = useState([]);
   const [input, setInput] = useState("");
 
-  // כל שינוי ב-todos → נשמור אוטומטית ב-localStorage
-  useEffect(() => {
-    localStorage.setItem("todos", JSON.stringify(todos));
-  }, [todos]);
+  // Reference to collection in Firestore
+  const todosCollection = collection(db, "todos");
 
-  // פונקציית הוספה
-  const addTodo = () => {
+  // Load todos in real-time from Firestore
+  useEffect(() => {
+    const unsubscribe = onSnapshot(todosCollection, (snapshot) => {
+      const items = snapshot.docs.map((doc) => {
+        return { id: doc.id, ...doc.data() };
+      });
+      setTodos(items);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  // Add todo to Firestore
+  const addTodo = async () => {
     if (input.trim() === "") return;
 
-    const newTodo = {
-      id: Date.now(),
+    await addDoc(todosCollection, {
       text: input,
       completed: false,
-    };
+    });
 
-    setTodos([...todos, newTodo]);
     setInput("");
   };
 
-  // מחיקה
-  const deleteTodo = (id) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+  // Delete todo from Firestore
+  const deleteTodo = async (id) => {
+    await deleteDoc(doc(db, "todos", id));
   };
 
-  // סימון ביצוע
-  const toggleComplete = (id) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
+  // Toggle complete
+  const toggleComplete = async (id, currentValue) => {
+    await updateDoc(doc(db, "todos", id), {
+      completed: !currentValue,
+    });
   };
 
   return (
@@ -66,10 +76,13 @@ export default function TodoApp() {
             key={todo.id}
             todo={todo}
             deleteTodo={deleteTodo}
-            toggleComplete={toggleComplete}
+            toggleComplete={() =>
+              toggleComplete(todo.id, todo.completed)
+            }
           />
         ))}
       </ul>
     </div>
   );
 }
+s
