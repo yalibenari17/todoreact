@@ -1,38 +1,121 @@
-.container {
-  text-align: center;
+/* ---------- RESET ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Assistant", sans-serif;
 }
 
-.inputBox {
+body {
+  background: #0a0a0f;
+  color: white;
   display: flex;
   justify-content: center;
+  padding-top: 40px;
+}
+
+/* ---------- APP CONTAINER ---------- */
+.app-container {
+  width: 95%;
+  max-width: 420px;
+  background: #11111a;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 25px rgba(140, 0, 255, 0.4);
+  border: 1px solid rgba(160, 0, 255, 0.4);
+  animation: neonPulse 3s infinite ease-in-out;
+}
+
+@keyframes neonPulse {
+  0% { box-shadow: 0px 0px 25px rgba(140, 0, 255, 0.3); }
+  50% { box-shadow: 0px 0px 35px rgba(180, 0, 255, 0.6); }
+  100% { box-shadow: 0px 0px 25px rgba(140, 0, 255, 0.3); }
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #d58bff;
+  text-shadow: 0px 0px 10px #9b00ff;
+}
+
+/* ---------- INPUT AREA ---------- */
+.input-area {
+  display: flex;
   gap: 10px;
+  margin-bottom: 25px;
 }
 
 input {
-  padding: 8px;
-  border-radius: 5px;
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
   border: none;
-}
-
-button {
-  padding: 8px 16px;
-  border: none;
-  background: #333;
+  background: #1b1b27;
   color: white;
-  border-radius: 5px;
+  border: 1px solid #7a00cc;
+  outline: none;
+  transition: 0.2s;
 }
 
-ul {
-  list-style: none;
-  padding: 0;
-  margin-top: 20px;
+input:focus {
+  border-color: #c266ff;
+  box-shadow: 0 0 10px rgba(180, 0, 255, 0.7);
 }
 
-.todo-item {
+button.add-btn {
+  padding: 12px 20px;
+  background: #9000ff;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+button.add-btn:hover {
+  background: #b24aff;
+  box-shadow: 0 0 12px #b24aff;
+}
+
+/* ---------- TASK LIST ---------- */
+.task {
+  background: #1a1a24;
+  padding: 14px;
+  border-radius: 12px;
+  margin-bottom: 12px;
   display: flex;
   justify-content: space-between;
-  padding: 8px;
-  background: #2e2e2e;
-  margin: 5px 0;
-  border-radius: 5px;
+  align-items: center;
+  border-left: 4px solid #b24aff;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.task-text {
+  font-size: 1.1rem;
+}
+
+/* ---------- DELETE BUTTON ---------- */
+.delete-btn {
+  background: #ff0066;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.delete-btn:hover {
+  background: #ff3385;
+  box-shadow: 0 0 10px #ff3385;
 }
