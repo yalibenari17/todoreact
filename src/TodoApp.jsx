@@ -1,7 +1,8 @@
 // src/TodoApp.jsx
 import { useEffect, useState } from "react";
-import TodoItem from "./TodoItem";
-import { db } from "./firebase.js"; // ⭐ חובה עם .js
+import TodoItem from "./TodoItem.jsx";
+import { db } from "./firebase.js";
+
 import {
   collection,
   addDoc,
@@ -11,30 +12,30 @@ import {
 } from "firebase/firestore";
 
 export default function TodoApp() {
-  const [todos, setTodos] = useState([]);
   const [input, setInput] = useState("");
+  const [todos, setTodos] = useState([]);
 
-  // בעת טעינת העמוד - מאזין אוטומטי לשינויים ב-Firestore
+  // טעינת משימות בזמן אמת
   useEffect(() => {
     const unsub = onSnapshot(collection(db, "todos"), (snapshot) => {
-      const list = snapshot.docs.map((doc) => ({
+      const allTodos = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-      setTodos(list);
+      setTodos(allTodos);
     });
 
-    return () => unsub(); // מנקה מאזין
+    return () => unsub();
   }, []);
 
-  // הוספת משימה
+  // הוספה
   async function addTodo() {
     if (input.trim() === "") return;
     await addDoc(collection(db, "todos"), { text: input });
     setInput("");
   }
 
-  // מחיקת משימה
+  // מחיקה
   async function deleteTodo(id) {
     await deleteDoc(doc(db, "todos", id));
   }
@@ -45,9 +46,9 @@ export default function TodoApp() {
 
       <div className="inputBox">
         <input
+          placeholder="הוסף משימה..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="הוסף משימה..."
         />
         <button onClick={addTodo}>הוסף</button>
       </div>

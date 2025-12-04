@@ -1,7 +1,10 @@
-import TodoApp from "./TodoApp";
+// src/App.jsx
+import TodoApp from "./TodoApp.jsx";
 
-function App() {
-  return <TodoApp />;
+export default function App() {
+  return (
+    <>
+      <TodoApp />
+    </>
+  );
 }
-
-export default App;
