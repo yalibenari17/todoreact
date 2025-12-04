@@ -1,8 +1,9 @@
+// src/firebase.js
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCmcPFRYRA4Muowhac0Btp6uyNrudGn154",
+  apiKey: "AIzaSyCmCPRFRY4MuowhacC8tp6uyNrudGn154",
   authDomain: "todoreact-a6913.firebaseapp.com",
   projectId: "todoreact-a6913",
   storageBucket: "todoreact-a6913.appspot.com",

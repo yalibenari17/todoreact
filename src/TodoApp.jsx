@@ -1,88 +1,62 @@
-import { useState, useEffect } from "react";
+// src/TodoApp.jsx
+import { useEffect, useState } from "react";
 import TodoItem from "./TodoItem";
-import "./style.css";
-import db from "./firebase.js";
-
-// Firestore imports
+import { db } from "./firebase.js"; // ⭐ חובה עם .js
 import {
   collection,
   addDoc,
   deleteDoc,
   doc,
-  onSnapshot,
-  updateDoc
+  onSnapshot
 } from "firebase/firestore";
 
 export default function TodoApp() {
   const [todos, setTodos] = useState([]);
   const [input, setInput] = useState("");
 
-  // Reference to collection in Firestore
-  const todosCollection = collection(db, "todos");
-
-  // Load todos in real-time from Firestore
+  // בעת טעינת העמוד - מאזין אוטומטי לשינויים ב-Firestore
   useEffect(() => {
-    const unsubscribe = onSnapshot(todosCollection, (snapshot) => {
-      const items = snapshot.docs.map((doc) => {
-        return { id: doc.id, ...doc.data() };
-      });
-      setTodos(items);
+    const unsub = onSnapshot(collection(db, "todos"), (snapshot) => {
+      const list = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setTodos(list);
     });
 
-    return () => unsubscribe();
+    return () => unsub(); // מנקה מאזין
   }, []);
 
-  // Add todo to Firestore
-  const addTodo = async () => {
+  // הוספת משימה
+  async function addTodo() {
     if (input.trim() === "") return;
-
-    await addDoc(todosCollection, {
-      text: input,
-      completed: false,
-    });
-
+    await addDoc(collection(db, "todos"), { text: input });
     setInput("");
-  };
+  }
 
-  // Delete todo from Firestore
-  const deleteTodo = async (id) => {
+  // מחיקת משימה
+  async function deleteTodo(id) {
     await deleteDoc(doc(db, "todos", id));
-  };
-
-  // Toggle complete
-  const toggleComplete = async (id, currentValue) => {
-    await updateDoc(doc(db, "todos", id), {
-      completed: !currentValue,
-    });
-  };
+  }
 
   return (
-    <div className="todo-container">
-      <h2>רשימת משימות</h2>
+    <div className="container">
+      <h1>רשימת משימות</h1>
 
-      <div className="add-row">
+      <div className="inputBox">
         <input
-          type="text"
-          placeholder="הוסף משימה..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          placeholder="הוסף משימה..."
         />
         <button onClick={addTodo}>הוסף</button>
       </div>
 
       <ul>
-        {todos.map((todo) => (
-          <TodoItem
-            key={todo.id}
-            todo={todo}
-            deleteTodo={deleteTodo}
-            toggleComplete={() =>
-              toggleComplete(todo.id, todo.completed)
-            }
-          />
+        {todos.map((t) => (
+          <TodoItem key={t.id} item={t} onDelete={() => deleteTodo(t.id)} />
         ))}
       </ul>
     </div>
   );
 }
-s
