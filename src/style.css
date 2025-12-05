@@ -1,105 +1,126 @@
-/* רקע כללי */
+/* ===== Global Layout ===== */
 body {
-  background: #05050a;
-  color: #fff;
-  font-family: 'Heebo', sans-serif;
+  margin: 0;
+  padding: 0;
+  font-family: "Rubik", sans-serif;
+  background: #05040a;
+  color: white;
   display: flex;
   justify-content: center;
   align-items: flex-start;
   min-height: 100vh;
-  padding-top: 80px;
-  direction: rtl;
+  padding-top: 50px;
 }
 
-/* קונטיינר */
-.app-container {
+.container {
   background: rgba(20, 0, 40, 0.6);
-  padding: 50px 55px;
-  border-radius: 22px;
-  box-shadow: 0 0 25px rgba(150, 0, 255, 0.6), inset 0 0 15px rgba(120, 0, 255, 0.4);
-  width: 420px;
+  border-radius: 20px;
+  padding: 40px 50px;
+  box-shadow: 0 0 25px #a020f0;
+  max-width: 450px;
+  width: 90%;
   text-align: center;
 }
 
-/* כותרת */
-.title {
-  font-size: 34px;
-  margin-bottom: 35px;
-  text-shadow: 0 0 12px #c070ff;
-}
-
-/* שורת הוספה */
-.input-row {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
+/* ===== Title ===== */
+h1 {
+  font-size: 2rem;
   margin-bottom: 25px;
+  text-shadow: 0 0 15px #c05cff;
 }
 
-.task-input {
-  width: 250px;
-  padding: 12px 15px;
-  border-radius: 10px;
-  border: 2px solid #a060ff;
-  background: rgba(255, 255, 255, 0.12);
-  color: white;
-  font-size: 16px;
-  outline: none;
-}
-
-.task-input::placeholder {
-  color: #bbbbbb;
-}
-
-.add-btn {
-  background: linear-gradient(135deg, #ff00f7, #8a2bff);
-  padding: 10px 18px;
-  border-radius: 10px;
-  border: none;
-  color: white;
-  font-weight: bold;
-  font-size: 15px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.add-btn:hover {
-  transform: scale(1.07);
-  box-shadow: 0 0 12px #c770ff;
-}
-
-/* רשימת משימות */
-.task-list {
-  list-style: none;
-  padding: 0;
-  margin-top: 20px;
-}
-
-.task-item {
-  background: rgba(40, 0, 80, 0.5);
-  padding: 12px 16px;
-  border-radius: 12px;
-  margin-bottom: 15px;
-  font-size: 17px;
+/* ===== Input and Button Area ===== */
+.inputBox {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: inset 0 0 10px rgba(160, 80, 255, 0.4);
+  gap: 10px;
+  justify-content: center;
 }
 
-/* כפתור מחיקה */
-.delete-btn {
-  background: #ff006e;
-  border: none;
-  padding: 6px 12px;
+input {
+  width: 220px;
+  padding: 12px;
+  border-radius: 12px;
+  outline: none;
+  border: 2px solid #b456ff;
+  background: rgba(255, 255, 255, 0.1);
   color: white;
+  font-size: 1rem;
+}
+
+button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #ff00e1, #a020f0);
+  color: white;
+  cursor: pointer;
+  transition: 0.25s ease-in-out;
+  font-size: 1rem;
   font-weight: bold;
-  border-radius: 8px;
+}
+
+button:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 0 12px #ff00e1;
+}
+
+/* ===== Task List ===== */
+.taskItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 15px;
+  padding: 12px;
+  background: rgba(30, 0, 50, 0.4);
+  border-radius: 12px;
+  font-size: 1.1rem;
+}
+
+.deleteBtn {
+  background: #ff004c;
+  padding: 8px 14px;
+  border-radius: 10px;
   cursor: pointer;
   transition: 0.2s;
 }
 
-.delete-btn:hover {
-  background: #ff226e;
-  transform: scale(1.1);
+.deleteBtn:hover {
+  background: #ff2f6a;
+}
+
+/* ===========================================
+   📱 MOBILE RESPONSIVE (iPhone 12/13/14/15)
+=========================================== */
+@media (max-width: 430px) {
+
+  .container {
+    padding: 30px 25px;
+    width: 95%;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  .inputBox {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  input {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  button {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .taskItem {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+  }
 }
